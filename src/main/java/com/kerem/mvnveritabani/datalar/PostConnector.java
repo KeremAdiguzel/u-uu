@@ -19,7 +19,7 @@ public class PostConnector {
         if(c==null){
             try {
                 Class.forName("org.postgresql.Driver");
-                c = DriverManager.getConnection("jdbc:postgresql://localhost:5432/SirketVeritabanı","postgres", "postgres");
+                c = DriverManager.getConnection("jdbc:postgresql://localhost:5433/JApp","postgres", "postgres");
             } catch (Exception e) {
                 e.printStackTrace();
             }

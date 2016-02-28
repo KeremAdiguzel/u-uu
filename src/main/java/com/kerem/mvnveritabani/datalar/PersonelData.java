@@ -1,8 +1,11 @@
 package com.kerem.mvnveritabani.datalar;
 
 import java.sql.Connection;
+import java.sql.Date;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Statement;
+import java.text.DateFormat;
 import java.util.ArrayList;
 import java.util.List;
 import javax.print.DocFlavor;
@@ -18,12 +21,14 @@ public class PersonelData implements IDataIsleri<Personel> {
     public Personel kaydet(Personel nesne) {
         try {
             Connection connect = PostConnector.getConnection();
-            Statement stmt = connect.createStatement();
+            PreparedStatement stmt = connect.prepareStatement("insert into personel (id, ad,soyad,sicilno,adres,isyeri,dogumtarihi,telefonCep,eposta,nott,il_id,ilce_id) "
+                    + " values (nextval('seq_kisi'),'" + nesne.getAd() + "'"
+                    + ",'" + nesne.getSoyad() + "','" + nesne.getSicilNo() + "','" + nesne.getAdres() + "','" + nesne.getIsyeri() + "',?,'" + nesne.getTelefonCep() + "','" + nesne.getEposta() + "','" + nesne.getNot() + "','" + nesne.getIlId() + "','" + nesne.getIlceId() + "')");
+            stmt.setDate(1, new java.sql.Date(nesne.getDogumTarihi().getTime()));
             int affectedRows;
-            affectedRows = stmt.executeUpdate("insert into tblpersonel (id, ad,soyad,sicilno,adres,isyeri,dogumtarihi,telefonCep,eposta,nott) "
-                + " values ('5','" + nesne.getAd() + "'"
-                + ",'" + nesne.getSoyad() + "','" + nesne.getSicilNo() + "','" + nesne.getAdres() + "','" + nesne.getIsyeri() + "','" + nesne.getDogumTarihi() + "','" + nesne.getTelefonCep() + "','" + nesne.getEposta() + "','" + nesne.getNot() + "')");
+            affectedRows = stmt.executeUpdate();
         } catch (Exception e) {
+            e.printStackTrace();
         }
         return null;
 
@@ -35,7 +40,7 @@ public class PersonelData implements IDataIsleri<Personel> {
         try {
             Connection conn = PostConnector.getConnection();
             Statement stmt = conn.createStatement();
-            int affectedRows = stmt.executeUpdate(" delete from kisi where id= " + nesne.getId());
+            int affectedRows = stmt.executeUpdate(" delete from personel where id= " + nesne.getId());
             return true;
         } catch (Exception e) {
             e.printStackTrace();
@@ -54,7 +59,8 @@ public class PersonelData implements IDataIsleri<Personel> {
         try {
             Connection conn = PostConnector.getConnection();
             Statement stmt = conn.createStatement();
-            ResultSet rs = stmt.executeQuery("select id,ad,soyad,sicilno,adres,isyeri,dogumtarihi,telefoncep,eposta,nott from tblpersonel");
+            ResultSet rs = stmt.executeQuery("select personel.id,personel.ad,soyad,sicilno,adres,isyeri,dogumtarihi,telefoncep,eposta,nott,c.name as city ,i.ad as ilce from personel left join city c on (c.id=personel.il_id) left join ilce i on (i.id=personel.ilce_id)");
+
             while (rs.next()) {
                 Long id = rs.getLong("id");
                 String ad = rs.getString("ad");
@@ -63,10 +69,12 @@ public class PersonelData implements IDataIsleri<Personel> {
                 String isyeri = rs.getString("isyeri");
                 Long sicil = rs.getLong("sicilno");
                 Long telefonCep = rs.getLong("telefoncep");
-                String dogum = rs.getString("dogumtarihi");
+                Date dogum = rs.getDate("dogumtarihi");
                 String eposta = rs.getString("eposta");
                 String not = rs.getString("nott");
-                peliste.add(new Personel( id, ad, soyad, sicil, adres, telefonCep, eposta, isyeri, not, dogum));
+                String il = rs.getString("city");
+                String ilce = rs.getString("ilce");
+                peliste.add(new Personel(id, ad, soyad, sicil, adres, telefonCep, eposta, isyeri, not, dogum, il, ilce));
             }
         } catch (Exception e) {
         }
@@ -77,7 +85,7 @@ public class PersonelData implements IDataIsleri<Personel> {
         try {
             Connection conn = PostConnector.getConnection();
             Statement stmt = conn.createStatement();
-            ResultSet rs = stmt.executeQuery("select ad,soyad,sicilno,adres,isyeri,dogumtarihi,telefonCep,eposta,nott from kisi where id=" + id);
+            ResultSet rs = stmt.executeQuery("select personel.id,personel.ad,soyad,sicilno,adres,isyeri,dogumtarihi,telefoncep,eposta,nott,c.name as city ,i.ad as ilce from personel left join city c on (c.id=personel.il_id) left join ilce i on (i.id=personel.ilce_id) from personel where id=" + id);
             while (rs.next()) {
                 Long idd = rs.getLong("id");
                 String ad = rs.getString("ad");
@@ -86,10 +94,12 @@ public class PersonelData implements IDataIsleri<Personel> {
                 String isyeri = rs.getString("isyeri");
                 Long sicil = rs.getLong("sicilno");
                 Long telefonCep = rs.getLong("telefonCep");
-                String dogum = rs.getString("dogumtarihi");
+                Date dogum = rs.getDate("dogumtarihi");
                 String eposta = rs.getString("eposta");
                 String not = rs.getString("nott");
-                return new Personel( idd,ad, soyad, sicil, adres, telefonCep, eposta, isyeri, not, dogum);
+                String il = rs.getString("city");
+                String ilce = rs.getString("ilce");
+                return new Personel(idd, ad, soyad, sicil, adres, telefonCep, eposta, isyeri, not, dogum, il, ilce);
             }
 
         } catch (Exception e) {

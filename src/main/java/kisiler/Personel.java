@@ -4,6 +4,8 @@
  */
 package kisiler;
 
+import java.util.Date;
+
 /**
  *
  * @author MKA
@@ -19,9 +21,13 @@ public class Personel {
     private String eposta;
     private String isyeri;
     private String not;
-    private String dogumTarihi;
+    private Date dogumTarihi;
+    private String il;
+    private String ilce;
+    private Long ilId;
+    private Long ilceId;
 
-    public Personel( Long id, String ad, String soyad, long sicilNo, String adres, long telefonCep, String eposta, String isyeri, String not, String dogumTarihi) {
+    public Personel(Long id, String ad, String soyad, long sicilNo, String adres, long telefonCep, String eposta, String isyeri, String not, Date dogumTarihi, String il, String ilce) {
         this.id = id;
         this.ad = ad;
         this.soyad = soyad;
@@ -32,19 +38,36 @@ public class Personel {
         this.isyeri = isyeri;
         this.not = not;
         this.dogumTarihi = dogumTarihi;
+        this.il = il;
+        this.ilce = ilce;
+    }
+
+    
+
+    public String getIl() {
+        return il;
+    }
+
+    public void setIl(String il) {
+        this.il = il;
+    }
+
+    public String getIlce() {
+        return ilce;
+    }
+
+    public void setIlce(String ilce) {
+        this.ilce = ilce;
     }
 
     public Personel() {
     }
 
-    
-    
-    
-    public String getDogumTarihi() {
+    public Date getDogumTarihi() {
         return dogumTarihi;
     }
 
-    public void setDogumTarihi(String dogumTarihi) {
+    public void setDogumTarihi(Date dogumTarihi) {
         this.dogumTarihi = dogumTarihi;
     }
 
@@ -119,4 +142,21 @@ public class Personel {
     public void setIsyeri(String isyeri) {
         this.isyeri = isyeri;
     }
+
+    public Long getIlId() {
+        return ilId;
+    }
+
+    public void setIlId(Long ilId) {
+        this.ilId = ilId;
+    }
+
+    public Long getIlceId() {
+        return ilceId;
+    }
+
+    public void setIlceId(Long ilceId) {
+        this.ilceId = ilceId;
+    }
+    
 }

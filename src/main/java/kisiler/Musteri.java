@@ -4,15 +4,25 @@
  */
 package kisiler;
 
+import java.sql.Date;
+
 /**
  *
  * @author MKA
  */
 public class Musteri {
+
     private Long id;
-     private String ad;
+    private String ad;
     private String soyad;
     private String adres;
+    private long telefonCep;
+    private String eposta;
+    private String isyeri;
+    private String not;
+    private Date dogum;
+    private String il;
+    private String ilce;
 
     public Long getId() {
         return id;
@@ -77,8 +87,28 @@ public class Musteri {
     public void setNot(String not) {
         this.not = not;
     }
-    private long telefonCep;
-    private String eposta;
-    private String isyeri;
-       private String not;
+
+    public Date getDogum() {
+        return dogum;
+    }
+
+    public void setDogum(Date dogum) {
+        this.dogum = dogum;
+    }
+
+    public String getIl() {
+        return il;
+    }
+
+    public void setIl(String il) {
+        this.il = il;
+    }
+
+    public String getIlce() {
+        return ilce;
+    }
+
+    public void setIlce(String ilce) {
+        this.ilce = ilce;
+    }
 }

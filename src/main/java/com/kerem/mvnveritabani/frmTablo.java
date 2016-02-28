@@ -19,7 +19,8 @@ public class frmTablo extends javax.swing.JFrame {
 
     PersonelData personeldat = new PersonelData();
     KullaniciData kullanicidata = new KullaniciData();
-Personel p=null;
+    Personel p = null;
+
     /**
      * Creates new form frmTablo
      */
@@ -29,8 +30,8 @@ Personel p=null;
         if (a == 1) {
         } else if (a == 2) {
             ptabloDoldur();
-            this.p=(Personel) o;
-            
+            this.p = (Personel) o;
+
         }
     }
 
@@ -102,7 +103,7 @@ Personel p=null;
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 504, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 900, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(btnEkle, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 108, Short.MAX_VALUE)
@@ -144,10 +145,10 @@ Personel p=null;
     }//GEN-LAST:event_btnIptalActionPerformed
 
     private void btnEkleActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEkleActionPerformed
- dlgPersEkle dlgp=new dlgPersEkle(this, true);
- dlgp.show();
- ptabloDoldur();
- // TODO add your handling code here:
+        dlgPersEkle dlgp = new dlgPersEkle(this, true);
+        dlgp.show();
+        ptabloDoldur();
+        // TODO add your handling code here:
     }//GEN-LAST:event_btnEkleActionPerformed
     /**
      * @param args the command line arguments
@@ -166,9 +167,9 @@ Personel p=null;
 
     public void ptabloDoldur() {
         List<Personel> pliste = personeldat.getAll();
-        String[] headers = new String[]{ "id","ad", "soyad", "sicilno", "adres", "isyeri", "dogumtarihi", "telefonCep", "eposta", "nott"};
+        String[] headers = new String[]{"İD", "AD", "SOYAD", "SİCİL NO", "ADRES", "İŞ YERİ", "DOĞUM TARİHİ", "Cep Telefonu", "E-POSTA", "Notlar", "ŞEHİR", "İLÇE"};
 
-        String[][] data = new String[pliste.size()][10];
+        String[][] data = new String[pliste.size()][12];
 
         for (int a = 0; a < pliste.size(); a++) {
             data[a][0] = pliste.get(a).getId().toString();
@@ -177,10 +178,14 @@ Personel p=null;
             data[a][3] = String.valueOf(pliste.get(a).getSicilNo());
             data[a][4] = pliste.get(a).getAdres();
             data[a][7] = pliste.get(a).getIsyeri();
-            data[a][9] = pliste.get(a).getDogumTarihi();
+            if(pliste.get(a).getDogumTarihi()!=null)
+                data[a][6] = pliste.get(a).getDogumTarihi().toLocaleString();
             data[a][5] = String.valueOf(pliste.get(a).getTelefonCep());
-            data[a][6] = pliste.get(a).getEposta();
-            data[a][8] = pliste.get(a).getNot();
+            data[a][8] = pliste.get(a).getEposta();
+            data[a][9] = pliste.get(a).getNot();
+            data[a][10] = pliste.get(a).getIl();
+            data[a][11] = pliste.get(a).getIlce();
+
         }
         tblTablo.setModel(new DefaultTableModel(data, headers));
     }
