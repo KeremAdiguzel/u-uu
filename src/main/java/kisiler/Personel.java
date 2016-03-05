@@ -26,6 +26,15 @@ public class Personel {
     private String ilce;
     private Long ilId;
     private Long ilceId;
+    private int sele;
+
+    public int getSele() {
+        return sele;
+    }
+
+    public void setSele(int sele) {
+        this.sele = sele;
+    }
 
     public Personel(Long id, String ad, String soyad, long sicilNo, String adres, long telefonCep, String eposta, String isyeri, String not, Date dogumTarihi, String il, String ilce) {
         this.id = id;
@@ -41,8 +50,6 @@ public class Personel {
         this.il = il;
         this.ilce = ilce;
     }
-
-    
 
     public String getIl() {
         return il;
@@ -158,5 +165,4 @@ public class Personel {
     public void setIlceId(Long ilceId) {
         this.ilceId = ilceId;
     }
-    
 }

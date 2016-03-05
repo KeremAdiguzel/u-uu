@@ -28,7 +28,7 @@ public class YerlerData {
         try {
             Connection conn = PostConnector.getConnection();
             Statement stmt = conn.createStatement();
-            ResultSet rs = stmt.executeQuery("select id,name from city");
+            ResultSet rs = stmt.executeQuery("select id,name from il");
             while (rs.next()) {
                 Long id = rs.getLong("id");
                 String ad = rs.getString("name");
@@ -91,7 +91,7 @@ public class YerlerData {
         try {
             Connection conn = PostConnector.getConnection();
             Statement stmt = conn.createStatement();
-            ResultSet rs = stmt.executeQuery("SELECT ilce.id,  ilce.il_id,  ilce.ad FROM   ilce  join city  ON ( city.id = ilce.il_id ) wHERE  city.name = '" + ilTanim + "'");
+            ResultSet rs = stmt.executeQuery("SELECT ilce.id,  ilce.il_id,  ilce.ad FROM   ilce  join il  ON ( il.id = ilce.il_id ) wHERE  il.name = '" + ilTanim + "'");
             while (rs.next()) {
                 Long id = rs.getLong("id");
                 String ad = rs.getString("ad");

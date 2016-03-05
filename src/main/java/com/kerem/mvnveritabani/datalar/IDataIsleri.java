@@ -14,9 +14,9 @@ public interface IDataIsleri<K> {
 
     public K kaydet(K nesne);
 
-    public Boolean sil(K nesne);
+    public Boolean sil(K nesne, int selectedRow);
 
-    public K guncelle(K nesne);
+    public K guncelle(K nesne, int selectedRow);
 
     public List<K> getAll();
 

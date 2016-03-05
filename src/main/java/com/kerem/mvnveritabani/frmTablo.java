@@ -6,10 +6,16 @@ package com.kerem.mvnveritabani;
 
 import com.kerem.mvnveritabani.datalar.KullaniciData;
 import com.kerem.mvnveritabani.datalar.PersonelData;
-import java.util.ArrayList;
+import com.kerem.mvnveritabani.doyaisleri.ExcelAktar;
+import java.awt.HeadlessException;
+import java.io.File;
 import java.util.List;
+import javax.swing.DefaultComboBoxModel;
+import javax.swing.JButton;
+import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import kisiler.Personel;
+import kisiler.sutunlar;
 
 /**
  *
@@ -18,8 +24,12 @@ import kisiler.Personel;
 public class frmTablo extends javax.swing.JFrame {
 
     PersonelData personeldat = new PersonelData();
+    public List<Personel> pliste = personeldat.getAll();
     KullaniciData kullanicidata = new KullaniciData();
     Personel p = null;
+
+    public frmTablo() throws HeadlessException {
+    }
 
     /**
      * Creates new form frmTablo
@@ -28,11 +38,14 @@ public class frmTablo extends javax.swing.JFrame {
         initComponents();
 
         if (a == 1) {
-        } else if (a == 2) {
+        } 
+        else if (a == 2) {
             ptabloDoldur();
             this.p = (Personel) o;
 
         }
+        
+        araComboDoldur();
     }
 
     /**
@@ -53,6 +66,11 @@ public class frmTablo extends javax.swing.JFrame {
         btnDosya = new javax.swing.JButton();
         btnIncele = new javax.swing.JButton();
         btnIptal = new javax.swing.JButton();
+        jSeparator1 = new javax.swing.JSeparator();
+        jTextField1 = new javax.swing.JTextField();
+        jLabel1 = new javax.swing.JLabel();
+        cmbAra = new javax.swing.JComboBox();
+        btnAra = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -77,10 +95,25 @@ public class frmTablo extends javax.swing.JFrame {
         });
 
         btnSil.setText("Sil");
+        btnSil.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnSilActionPerformed(evt);
+            }
+        });
 
         btnDegistir.setText("Değiştir");
+        btnDegistir.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnDegistirActionPerformed(evt);
+            }
+        });
 
         btnExcel.setText("Excele Aktar");
+        btnExcel.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnExcelActionPerformed(evt);
+            }
+        });
 
         btnDosya.setText("Dosyaya Aktar");
         btnDosya.addActionListener(new java.awt.event.ActionListener() {
@@ -98,12 +131,23 @@ public class frmTablo extends javax.swing.JFrame {
             }
         });
 
+        jLabel1.setText("Ara:");
+
+        cmbAra.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        cmbAra.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cmbAraActionPerformed(evt);
+            }
+        });
+
+        btnAra.setText("Ara");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 900, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 912, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(btnEkle, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 108, Short.MAX_VALUE)
@@ -112,7 +156,14 @@ public class frmTablo extends javax.swing.JFrame {
                     .addComponent(btnExcel, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(btnDosya, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(btnIncele, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(btnIptal, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                    .addComponent(btnIptal, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jLabel1)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jSeparator1))
+                    .addComponent(jTextField1)
+                    .addComponent(cmbAra, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(btnAra, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -129,7 +180,17 @@ public class frmTablo extends javax.swing.JFrame {
                 .addComponent(btnDosya)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(btnIncele)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 109, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 12, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel1))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(cmbAra, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(btnAra)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 33, Short.MAX_VALUE)
                 .addComponent(btnIptal))
         );
 
@@ -150,10 +211,78 @@ public class frmTablo extends javax.swing.JFrame {
         ptabloDoldur();
         // TODO add your handling code here:
     }//GEN-LAST:event_btnEkleActionPerformed
+
+    private void araComboDoldur() {
+        sutunlar st = new sutunlar();
+        String[] sutun = st.getAraSutun();
+        String[] stu = new String[]{"kerem","ekrem"};
+        String[] sk= stu;
+        cmbAra.setModel(new DefaultComboBoxModel(st.getAraSutun()));
+
+
+    }
+
+    private void btnSilActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSilActionPerformed
+        PersonelData pd = new PersonelData();
+        int selectedRow = tblTablo.getSelectedRow();
+        pd.sil(p, selectedRow);
+        if (selectedRow != -1) {
+            ptabloDoldur();
+        } else {
+            JOptionPane.showMessageDialog(rootPane, "Satır seçiniz");
+        }
+    }//GEN-LAST:event_btnSilActionPerformed
+
+    private void cmbAraActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmbAraActionPerformed
+    }//GEN-LAST:event_cmbAraActionPerformed
+
+    private void btnDegistirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDegistirActionPerformed
+        PersonelData pd = new PersonelData();
+        Personel pp = new Personel();
+        int selectedRow = tblTablo.getSelectedRow();
+        pp.setSele(selectedRow);
+
+
+
+
+        if (selectedRow != -1) {
+            dlgGuncelle dlppEkle = new dlgGuncelle(this, true, selectedRow);
+            dlppEkle.show(true);
+            ptabloDoldur();
+        } else {
+            JOptionPane.showMessageDialog(rootPane, "Satır seçiniz");
+        }
+
+
+
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnDegistirActionPerformed
+
+    private void btnExcelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnExcelActionPerformed
+        try {
+            ExcelAktar excelbas = new ExcelAktar(); // Class'în bir nesnesini oluşturduk
+            if (excelbas != null) {
+                excelbas.fillData(tblTablo, new File("C:\\Intel\\tablo.xls")); // hangi tabloyu basacağımızı ve yolu belirledik.
+            }
+            JOptionPane.showMessageDialog(null, "Dosya " + "'C: iNTEL\\ tablo.xls' adresine başarıyla kaydedildi",//Başarılı Mesajı
+                    "Tablo Oluşturuldu", JOptionPane.INFORMATION_MESSAGE);
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }       // TODO add your handling code here:       // TODO add your handling code here:
+    }//GEN-LAST:event_btnExcelActionPerformed
+
+    public JButton getBtnDegistir() {
+        return btnDegistir;
+    }
+
+    public void setBtnDegistir(JButton btnDegistir) {
+        this.btnDegistir = btnDegistir;
+    }
     /**
      * @param args the command line arguments
      */
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnAra;
     private javax.swing.JButton btnDegistir;
     private javax.swing.JButton btnDosya;
     private javax.swing.JButton btnEkle;
@@ -161,30 +290,39 @@ public class frmTablo extends javax.swing.JFrame {
     private javax.swing.JButton btnIncele;
     private javax.swing.JButton btnIptal;
     private javax.swing.JButton btnSil;
+    private javax.swing.JComboBox cmbAra;
+    private javax.swing.JLabel jLabel1;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JSeparator jSeparator1;
+    private javax.swing.JTextField jTextField1;
     private javax.swing.JTable tblTablo;
     // End of variables declaration//GEN-END:variables
 
     public void ptabloDoldur() {
-        List<Personel> pliste = personeldat.getAll();
+
+        List<Personel> p1liste = personeldat.getAll();
+
+
         String[] headers = new String[]{"İD", "AD", "SOYAD", "SİCİL NO", "ADRES", "İŞ YERİ", "DOĞUM TARİHİ", "Cep Telefonu", "E-POSTA", "Notlar", "ŞEHİR", "İLÇE"};
+        sutunlar st = new sutunlar();
+        st.setAraSutun(headers);
+        String[][] data = new String[p1liste.size()][12];
 
-        String[][] data = new String[pliste.size()][12];
-
-        for (int a = 0; a < pliste.size(); a++) {
-            data[a][0] = pliste.get(a).getId().toString();
-            data[a][1] = pliste.get(a).getAd();
-            data[a][2] = pliste.get(a).getSoyad();
-            data[a][3] = String.valueOf(pliste.get(a).getSicilNo());
-            data[a][4] = pliste.get(a).getAdres();
-            data[a][7] = pliste.get(a).getIsyeri();
-            if(pliste.get(a).getDogumTarihi()!=null)
-                data[a][6] = pliste.get(a).getDogumTarihi().toLocaleString();
-            data[a][5] = String.valueOf(pliste.get(a).getTelefonCep());
-            data[a][8] = pliste.get(a).getEposta();
-            data[a][9] = pliste.get(a).getNot();
-            data[a][10] = pliste.get(a).getIl();
-            data[a][11] = pliste.get(a).getIlce();
+        for (int a = 0; a < p1liste.size(); a++) {
+            data[a][0] = p1liste.get(a).getId().toString();
+            data[a][1] = p1liste.get(a).getAd();
+            data[a][2] = p1liste.get(a).getSoyad();
+            data[a][3] = String.valueOf(p1liste.get(a).getSicilNo());
+            data[a][4] = p1liste.get(a).getAdres();
+            data[a][7] = p1liste.get(a).getIsyeri();
+            if (p1liste.get(a).getDogumTarihi() != null) {
+                data[a][6] = p1liste.get(a).getDogumTarihi().toLocaleString();
+            }
+            data[a][5] = String.valueOf(p1liste.get(a).getTelefonCep());
+            data[a][8] = p1liste.get(a).getEposta();
+            data[a][9] = p1liste.get(a).getNot();
+            data[a][10] = p1liste.get(a).getIl();
+            data[a][11] = p1liste.get(a).getIlce();
 
         }
         tblTablo.setModel(new DefaultTableModel(data, headers));
