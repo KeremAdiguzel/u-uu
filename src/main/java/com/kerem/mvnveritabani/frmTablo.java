@@ -212,8 +212,9 @@ public class frmTablo extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_btnEkleActionPerformed
 
+    sutunlar st = new sutunlar();
     private void araComboDoldur() {
-        sutunlar st = new sutunlar();
+        
         String[] sutun = st.getAraSutun();
         String[] stu = new String[]{"kerem","ekrem"};
         String[] sk= stu;
@@ -304,7 +305,7 @@ public class frmTablo extends javax.swing.JFrame {
 
 
         String[] headers = new String[]{"İD", "AD", "SOYAD", "SİCİL NO", "ADRES", "İŞ YERİ", "DOĞUM TARİHİ", "Cep Telefonu", "E-POSTA", "Notlar", "ŞEHİR", "İLÇE"};
-        sutunlar st = new sutunlar();
+     
         st.setAraSutun(headers);
         String[][] data = new String[p1liste.size()][12];
 
